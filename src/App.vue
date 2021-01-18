@@ -1,16 +1,21 @@
 // template principal
 <template> 
-  <Form/>
+  <div>
+    <Form/> <br/>
+    <FetchPrevent/>
+  </div>
 </template>
 
 <script>
 // import Botao from "./components/Botao.vue";
-import Form from "./components/Form.vue"
+import Form from "./components/Form.vue";
+import FetchPrevent from "./components/FetchPrevent.vue"
 
 export default {
   // name: 'App',
   components: {
-    Form
+    Form,
+    FetchPrevent
   },
 };
 </script>
