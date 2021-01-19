@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="wrap">
+    <div class="container">
         <h2> Pokemons abilities: </h2>
         <ul>
             <li> <a @click.prevent="puxarAcao" href="https://pokeapi.co/api/v2/pokemon/ditto"> Ditto </a> </li>
@@ -27,6 +27,7 @@ export default {
         habilidades: {}
     }),
     methods:{
+        // usar async com endpoint 
         puxarAcao(event){
             const url = event.currentTarget.href
             fetch(url)
@@ -42,8 +43,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.rep
-    width 100px
-    height 10px
-    background-color pink
+// com scoped não pega o estilo
+    ul 
+        text-align left !important    
 </style>
