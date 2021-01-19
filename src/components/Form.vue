@@ -2,11 +2,11 @@
 <!-- section -->
     <div class="container"> <!-- container -->
         <h2> Criar conta </h2>
-        <div class="message">
+        <div class="message" v-if="submitStatus === 'OK'">
             <p> ola </p>
         </div>    
         <!-- não precisa action="#" -->
-        <form >
+        <form v-else>
             <fieldset>
                 <div class="input-content">
                     <!-- {{ $v.name }} -->
@@ -18,7 +18,8 @@
                         @change="$v.criarConta.name.$touch()" 
                         :class="{'input-focus':$v.criarConta.name.$error}"
                     />
-                    <span v-if="$v.criarConta.name.$error"> Este campo é requerido </span>
+                    <!-- <span v-if="$v.criarConta.name.$error"> Este campo é requerido </span> -->
+                    <span v-if="!$v.criarConta.name.minLength"> Seu nome precisa ter no minimo {{$v.criarConta.name.$params.minLength.min}} letras.</span>
                 </div> 
                 <div class="input-content">
                     <!-- {{ $v.mail }} -->
@@ -41,7 +42,9 @@
                         id="senha" 
                         :class="{'input-focus':$v.criarConta.password.$error}"
                     />
-                    <span v-if="$v.criarConta.password.$error"> Este campo é requerido </span>
+                    <!-- <span v-if="$v.criarConta.password.required"> Este campo é requerido </span> -->
+                    <span v-if="!$v.criarConta.password.minLength"> A senha precisa ter entre {{$v.criarConta.password.$params.minLength.min}} e {{$v.criarConta.password.$params.minLength.max}} caracteres </span>
+
                 </div>
                 <div class="input-content">
                     <!-- {{ $v.conf_password }} -->
@@ -56,19 +59,29 @@
                 </div>
                 <div class="input-content">
                     <label class="check" for="receberEmail">Aceitar receber e-mails?</label>
-                    <input class="check" type="checkbox" v-model="receberEmail" id="receberEmail" />
+                    <input 
+                        class="check" 
+                        type="checkbox" 
+                        v-model="$v.criarConta.receberEmail" 
+                        id="receberEmail" 
+                    />
                 </div>    
                 <div class="input-content">
                     <label class="check" for="termos">Aceita os Termos e Condições?</label>
-                    <input class="check" type="checkbox" v-model="termos" id="termos" />
+                    <input 
+                        class="check" 
+                        type="checkbox" 
+                        v-model="$v.criarConta.termos" 
+                        id="termos" 
+                    />
                 </div>    
                 <div class="input-content">
                     <label for="msg">Mensagem:</label>
-                    <textarea v-model="message" id="msg"></textarea>
+                    <textarea v-model="$v.criarConta.message" id="msg"></textarea>
                 </div> 
                 <!-- @click.prevent="$v.$touch()" não precisa disso -->
-                <button  class="btn" @click.prevent="$v.$touch()">Criar</button>
-                {{$v}}
+                <!-- <button  class="btn" @click.prevent="$v.$touch()">Criar</button> -->
+                <button @click.prevent="click" class="btn" type="submit" :disabled="submitStatus === 'PENDING'">Criar</button>
                 <!-- <Botao :type="submit"/> -->
                 <!-- <Botao/> -->
             </fieldset>
@@ -79,7 +92,7 @@
 
 <script>
 // import Botao from "./Botao.vue";
-import { required, email, sameAs } from 'vuelidate/lib/validators'
+import { required, email, sameAs, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
     components: {
@@ -94,24 +107,46 @@ export default {
             receberEmail: '',
             termos: '',
             message: ''            
-        }
+        },
+        submitStatus: null,
     }),
     validations: {
         criarConta:{
-            name: { required },
-            mail: { required, email },
-            password: { required },
+            name: { 
+                required, 
+                minLength: minLength(4)
+            },
+            mail: { 
+                required, 
+                email 
+            },
+            password: { 
+                required,
+                minLength: minLength(6),
+                maxLength: maxLength(30)
+            },
             conf_password: { 
                 required,
                 sameAs: sameAs('password'),
-            },              
+            },               
         }
     },
     methods: {
         click: function(){
             console.log("clicou");
+        },
+        submit() {
+            console.log('submit!');
+            // this.$v.$touch()
+            if (this.$v.$invalid) {
+                this.submitStatus = 'ERROR'
+            } else {
+                // do your submit logic here
+                this.submitStatus = 'PENDING'
+                this.submitStatus = 'OK'
+            }   
         }
-    }
+    }    
 }
 </script>
 
@@ -119,10 +154,7 @@ export default {
 // com scoped no <style> ele não pega as infos do config
 
 @import '../assets/stylus/config.styl'
-@import '../assets/stylus/general.styl'
-
-.input-focus
-    border-color $color-primary   
+@import '../assets/stylus/general.styl' 
 
 .container   
     form 
