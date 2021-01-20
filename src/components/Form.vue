@@ -7,66 +7,66 @@
         </div>
         <form @submit.prevent="submit" v-else>
             <fieldset>
-                <div class="input-content">
+                <div class="input">
                     <label for="nome">Nome*</label>
                     <input 
                         v-model="$v.criarConta.name.$model" 
                         type="text"
                         id="nome" 
                         @change="$v.criarConta.name.$touch()" 
-                        :class="{'input-focus':$v.criarConta.name.$error}"
+                        :class="{'input__focus':$v.criarConta.name.$error}"
                     />
                     <span v-if="$v.criarConta.name.minLength"> Seu nome precisa ter no minimo {{$v.criarConta.name.$params.minLength.min}} letras.</span>
                 </div> 
-                <div class="input-content">
+                <div class="input">
                     <label for="email">E-mail*</label>
                     <input 
                         v-model="$v.criarConta.mail.$model" 
                         type="email" 
                         id="email" 
-                        :class="{'input-focus':$v.criarConta.mail.$error}"
+                        :class="{'input__focus':$v.criarConta.mail.$error}"
                     />
                     <span v-if="$v.criarConta.mail.$error"> Este E-mail é invalido </span>
                 </div>
-                <div class="input-content">
+                <div class="input">
                     <label for="senha">Senha*</label>
                     <input 
                         v-model="$v.criarConta.password.$model" 
                         type="password" 
                         id="senha" 
-                        :class="{'input-focus':$v.criarConta.password.$error}"
+                        :class="{'input__focus':$v.criarConta.password.$error}"
                     />
                     <span v-if="$v.criarConta.password.minLength"> A senha precisa ter entre {{$v.criarConta.password.$params.minLength.min}} e {{$v.criarConta.password.$params.maxLength.max}} caracteres </span>
 
                 </div>
-                <div class="input-content">
+                <div class="input">
                     <label for="confsenha">Confirme sua senha*</label>
                     <input 
                         v-model="$v.criarConta.conf_password.$model" 
                         type="password" 
                         id="confsenha" 
-                        :class="{'input-focus':$v.criarConta.conf_password.$error}"/>
+                        :class="{'input__focus':$v.criarConta.conf_password.$error}"/>
                     <span v-if="$v.criarConta.conf_password.$error"> As senhas informadas não coincidem </span>
                 </div>
-                <div class="input-content">
-                    <label class="check" for="receberEmail">Aceitar receber e-mails?</label>
+                <div class="input">
+                    <label class="input__check" for="receberEmail">Aceitar receber e-mails?</label>
                     <input 
-                        class="check" 
+                        class="input__check" 
                         type="checkbox" 
                         v-model="$v.criarConta.receberEmail" 
                         id="receberEmail" 
                     />
                 </div>    
-                <div class="input-content">
-                    <label class="check" for="termos">Aceita os Termos e Condições?</label>
+                <div class="input">
+                    <label class="input__check" for="termos">Aceita os Termos e Condições?</label>
                     <input 
-                        class="check" 
+                        class="input__check" 
                         type="checkbox" 
                         v-model="$v.criarConta.termos" 
                         id="termos" 
                     />
                 </div>    
-                <div class="input-content">
+                <div class="input">
                     <label for="msg">Mensagem:</label>
                     <textarea v-model="$v.criarConta.message" id="msg"></textarea>
                 </div> 
@@ -140,7 +140,7 @@ export default {
 .container   
     form 
         font-family $font-primary
-        font-size 20px
+        font-size $subtitle-desk
         fieldset
             border 0
             padding 0
@@ -154,32 +154,28 @@ export default {
         input
             height 25px
         input:focus 
-            font-size 20px   
+            font-size $subtitle-desk  
         textarea
             height 85px
-        .check
-            margin 0 0 8px 0
-            @media screen and (min-width: 600px)
-                display inline
-                width 20px 
-        input.check 
-            @media screen and (min-width: 600px)
-                margin 0 0 0 20px
-        .input-content
+        .input
             margin 15px auto
             width 80%
             @media screen and (min-width: 600px)
-                margin-top 20px
                 margin 20px 0 
             span
-                font-size 14px
+                font-size $legend
                 color $color-primary 
-            .input-focus
-                border-color $color-primary  
+            .input__focus
+                border-color $color-primary
+            .input__check
+                margin 0 0 8px 0
+                @media screen and (min-width: 600px)
+                    display inline
+                    width 20px     
         .btn 
             background-color $color-primary
             font-family $font-primary
-            font-size 16px
+            font-size $subtitle-desk
             height 30px
             width 100px
             border-radius 10px
