@@ -24,7 +24,7 @@
 export default {
     data: () => ({
         pokemon: {},
-        habilidades: {}
+        habilidades: {},
     }),
     methods:{
         // usar async com endpoint 
@@ -36,7 +36,6 @@ export default {
                 this.pokemon=response;
                 this.habilidades = this.pokemon.abilities;
             });
-            
         }
     }
 }

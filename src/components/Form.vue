@@ -1,15 +1,13 @@
 <template lang="html">
 <!-- section -->
-    <div class="container"> <!-- container -->
+    <div class="container"> 
         <h2> Criar conta </h2>
-        <div class="message" v-if="submitStatus === 'OK'">
-            <p> ola </p>
+        <div v-if="submitStatus">
+            <p> Conta criada com sucesso! </p>
         </div>    
-        <!-- não precisa action="#" -->
-        <form v-else>
+        <form @submit.prevent="submit" v-else>
             <fieldset>
                 <div class="input-content">
-                    <!-- {{ $v.name }} -->
                     <label for="nome">Nome*</label>
                     <input 
                         v-model="$v.criarConta.name.$model" 
@@ -18,11 +16,9 @@
                         @change="$v.criarConta.name.$touch()" 
                         :class="{'input-focus':$v.criarConta.name.$error}"
                     />
-                    <!-- <span v-if="$v.criarConta.name.$error"> Este campo é requerido </span> -->
-                    <span v-if="!$v.criarConta.name.minLength"> Seu nome precisa ter no minimo {{$v.criarConta.name.$params.minLength.min}} letras.</span>
+                    <span v-if="$v.criarConta.name.minLength"> Seu nome precisa ter no minimo {{$v.criarConta.name.$params.minLength.min}} letras.</span>
                 </div> 
                 <div class="input-content">
-                    <!-- {{ $v.mail }} -->
                     <label for="email">E-mail*</label>
                     <input 
                         v-model="$v.criarConta.mail.$model" 
@@ -30,11 +26,9 @@
                         id="email" 
                         :class="{'input-focus':$v.criarConta.mail.$error}"
                     />
-                    <!-- <span v-if="$v.mail.$model"> Este campo é requerido </span>  -->
                     <span v-if="$v.criarConta.mail.$error"> Este E-mail é invalido </span>
                 </div>
                 <div class="input-content">
-                    <!-- {{ $v.password }} -->
                     <label for="senha">Senha*</label>
                     <input 
                         v-model="$v.criarConta.password.$model" 
@@ -42,19 +36,16 @@
                         id="senha" 
                         :class="{'input-focus':$v.criarConta.password.$error}"
                     />
-                    <!-- <span v-if="$v.criarConta.password.required"> Este campo é requerido </span> -->
-                    <span v-if="!$v.criarConta.password.minLength"> A senha precisa ter entre {{$v.criarConta.password.$params.minLength.min}} e {{$v.criarConta.password.$params.minLength.max}} caracteres </span>
+                    <span v-if="$v.criarConta.password.minLength"> A senha precisa ter entre {{$v.criarConta.password.$params.minLength.min}} e {{$v.criarConta.password.$params.maxLength.max}} caracteres </span>
 
                 </div>
                 <div class="input-content">
-                    <!-- {{ $v.conf_password }} -->
                     <label for="confsenha">Confirme sua senha*</label>
                     <input 
                         v-model="$v.criarConta.conf_password.$model" 
                         type="password" 
                         id="confsenha" 
                         :class="{'input-focus':$v.criarConta.conf_password.$error}"/>
-                    <!-- <span v-if="$v.conf_password.$sameAs"> Senhas diferentes </span> -->
                     <span v-if="$v.criarConta.conf_password.$error"> As senhas informadas não coincidem </span>
                 </div>
                 <div class="input-content">
@@ -81,12 +72,11 @@
                 </div> 
                 <!-- @click.prevent="$v.$touch()" não precisa disso -->
                 <!-- <button  class="btn" @click.prevent="$v.$touch()">Criar</button> -->
-                <button @click.prevent="click" class="btn" type="submit" :disabled="submitStatus === 'PENDING'">Criar</button>
-                <!-- <Botao :type="submit"/> -->
-                <!-- <Botao/> -->
+                <button  class="btn" type="submit" :disabled="submitStatus === 'PENDING'">Criar</button>
+                <!-- @click.prevent="click", o prevent do submit fica no form, não no botão em si -->
+                <!-- <Botao :type="submit"/> usando emit para o type dinamico em componente -->
             </fieldset>
         </form>
-        
     </div>    
 </template>
 
@@ -108,7 +98,7 @@ export default {
             termos: '',
             message: ''            
         },
-        submitStatus: null,
+        submitStatus: false,
     }),
     validations: {
         criarConta:{
@@ -136,15 +126,12 @@ export default {
             console.log("clicou");
         },
         submit() {
-            console.log('submit!');
-            // this.$v.$touch()
+            this.$v.$touch()
             if (this.$v.$invalid) {
-                this.submitStatus = 'ERROR'
+                this.submitStatus = false
             } else {
-                // do your submit logic here
-                this.submitStatus = 'PENDING'
-                this.submitStatus = 'OK'
-            }   
+                this.submitStatus = true
+            }
         }
     }    
 }
