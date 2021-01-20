@@ -1,10 +1,10 @@
 <template lang="html">
 <!-- section -->
     <div class="container"> 
-        <h2> Criar conta </h2>
-        <div v-if="submitStatus">
+        <h2> Criar conta </h2> 
+        <div v-if="sucess">
             <p> Conta criada com sucesso! </p>
-        </div>    
+        </div>
         <form @submit.prevent="submit" v-else>
             <fieldset>
                 <div class="input-content">
@@ -72,7 +72,7 @@
                 </div> 
                 <!-- @click.prevent="$v.$touch()" não precisa disso -->
                 <!-- <button  class="btn" @click.prevent="$v.$touch()">Criar</button> -->
-                <button  class="btn" type="submit" :disabled="submitStatus === 'PENDING'">Criar</button>
+                <button  class="btn" type="submit" :disabled="$v.$invalid">Criar</button>
                 <!-- @click.prevent="click", o prevent do submit fica no form, não no botão em si -->
                 <!-- <Botao :type="submit"/> usando emit para o type dinamico em componente -->
             </fieldset>
@@ -81,12 +81,10 @@
 </template>
 
 <script>
-// import Botao from "./Botao.vue";
 import { required, email, sameAs, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
     components: {
-        // Botao
     },
     data: () => ({
         criarConta:{
@@ -98,7 +96,7 @@ export default {
             termos: '',
             message: ''            
         },
-        submitStatus: false,
+        sucess: false,
     }),
     validations: {
         criarConta:{
@@ -126,12 +124,8 @@ export default {
             console.log("clicou");
         },
         submit() {
-            this.$v.$touch()
-            if (this.$v.$invalid) {
-                this.submitStatus = false
-            } else {
-                this.submitStatus = true
-            }
+            // this.$v.$touch()
+            this.sucess=true;
         }
     }    
 }
