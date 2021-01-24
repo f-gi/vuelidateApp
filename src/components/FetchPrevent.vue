@@ -7,7 +7,6 @@
             <li> <a @click.prevent="puxarAcao" href="https://pokeapi.co/api/v2/pokemon/bulbasaur"> Bulbasaur </a> </li>
         </ul>
         <div>
-            <!-- pokemon.order -->
             <div v-for="value in habilidades" :key="pokemon.order+value.ability.name">
                 <p>{{value.ability.name}}</p>
             </div>
@@ -22,24 +21,25 @@ export default {
         habilidades: {},
     }),
     methods:{
-        // usar async com endpoint 
+        // axios: usar async com endpoint 
+        // pusar pagina dinamica, uma pra cada pokemon 
+        // usar jet pro grid com rupture 
         puxarAcao(event){
             const url = event.currentTarget.href
             fetch(url)
             .then(response => response.json())
             .then(response => {
                 this.pokemon=response;
-                // console.log(this.pokemon.order);
                 this.habilidades = this.pokemon.abilities;
-                // console.log(this.habilidades);
+                // console.log(this.pokemon.sprites.front_default);
             });
         }
     }
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 // com scoped não pega o estilo
     ul 
-        text-align left !important    
+        text-align left   
 </style>
