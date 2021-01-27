@@ -23,6 +23,7 @@
     components: { VueSlickCarousel },
     data: () => ({
         pokeTeste:[],
+        pokepoke: [],
         settings:{
             "arrows": true,
             "dots": true,
@@ -43,9 +44,10 @@
             for(let i=1; i<=10; i++){
                 const response = await axios.get("https://pokeapi.co/api/v2/pokemon/"+i);
                 this.pokeTeste.push(response.data);
-                console.log(this.pokeTeste);                
             }
-
+            const response = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=10");
+            this.pokepoke = response.data;
+            console.log(this.pokepoke);
         },
     },
   }
