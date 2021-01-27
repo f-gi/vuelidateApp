@@ -10,6 +10,9 @@
             <div v-for="value in habilidades" :key="pokemon.order+value.ability.name">
                 <p>{{value.ability.name}}</p>
             </div>
+            <div>
+                <img :src="img">
+            </div>    
         </div>       
     </div>        
 </template>
@@ -19,10 +22,11 @@ export default {
     data: () => ({
         pokemon: {},
         habilidades: {},
+        img: '',
     }),
     methods:{
         // axios: usar async com endpoint 
-        // pusar pagina dinamica, uma pra cada pokemon 
+        // usar pagina dinamica, uma pra cada pokemon 
         // usar jet pro grid com rupture 
         puxarAcao(event){
             const url = event.currentTarget.href
@@ -31,6 +35,7 @@ export default {
             .then(response => {
                 this.pokemon=response;
                 this.habilidades = this.pokemon.abilities;
+                this.img = this.pokemon.sprites.front_default;
                 // console.log(this.pokemon.sprites.front_default);
             });
         }

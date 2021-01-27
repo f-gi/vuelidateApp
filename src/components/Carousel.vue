@@ -1,25 +1,28 @@
 <template lang="html">
   <div class="sliderContainer">
     <h2 class="sliderContainer__title"> Carrossel </h2>
-    <VueSlickCarousel v-bind="settings">
-        <div><h3>1</h3></div>
-        <div><h3>2</h3></div>
-        <div><h3>2</h3></div>
-        <div><h3>2</h3></div>
-        <div><h3>2</h3></div>
+    <!-- não da pra usar .length dentro do v-if? -->
+    <VueSlickCarousel v-if="pokeTeste.length>9" v-bind="settings" class="sliderContainer__carrossel">
+        <div  v-for="(pokemon, index) in pokeTeste" :key="index" class="sliderContainer__for">
+            <div>
+                <img :src="pokemon.sprites.front_default"> 
+            </div>        
+        </div>
     </VueSlickCarousel>
   </div>
 </template>
 
 <script>
-  import VueSlickCarousel from 'vue-slick-carousel'
-  import 'vue-slick-carousel/dist/vue-slick-carousel.css'
-  import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
+  import VueSlickCarousel from 'vue-slick-carousel';
+  import 'vue-slick-carousel/dist/vue-slick-carousel.css';
+  import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
+  import axios from "axios";
 
   export default {
     name: 'Carousel',
     components: { VueSlickCarousel },
     data: () => ({
+        pokeTeste:[],
         settings:{
             "arrows": true,
             "dots": true,
@@ -31,6 +34,20 @@
             "slidesToScroll": 1            
         }
     }),
+    mounted() {
+        this.getPokemons();
+    },
+    methods: {
+        async getPokemons() {
+            // get de https://pokeapi.co/api/v2/pokemon/ rertorna __ob__ observer
+            for(let i=1; i<=10; i++){
+                const response = await axios.get("https://pokeapi.co/api/v2/pokemon/"+i);
+                this.pokeTeste.push(response.data);
+                console.log(this.pokeTeste);                
+            }
+
+        },
+    },
   }
 </script>
 
@@ -60,5 +77,6 @@
     .slick-prev
         // tira o click do botão 
         left 5px
-    
+    .slick-slide img
+        display inline
 </style>
